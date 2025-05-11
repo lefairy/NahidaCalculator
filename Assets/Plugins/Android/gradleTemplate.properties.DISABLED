@@ -1,0 +1,7 @@
+org.gradle.jvmargs=-Xmx**JVM_HEAP_SIZE**M
+org.gradle.parallel=true
+org.gradle.daemon=true
+org.gradle.parallel.threads=24
+org.gradle.workers.max=24
+unityStreamingAssets=**STREAMING_ASSETS**
+**ADDITIONAL_PROPERTIES**

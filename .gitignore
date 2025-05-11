@@ -1,0 +1,13 @@
+.config
+.plastic
+.vscode
+Library
+Logs
+Temp
+Backup
+Assets/Save
+Assets/Save.meta
+Assets/config.json
+Assets/config.json.meta
+hidden_changes.conf
+ignore.conf
