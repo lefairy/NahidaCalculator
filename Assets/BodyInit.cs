@@ -22,7 +22,7 @@ public class BodyInit : MonoBehaviour
 #else
         opt.SetSaveDef(Application.dataPath + "/Save");
 #endif
-        GetComponent<SaveLoad>().Load("config.json", true);
+        GetComponent<SaveLoad>().Load("", "config.json", true);
         box.Start();
 
         if (canvas == null)

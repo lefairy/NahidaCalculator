@@ -4079,18 +4079,17 @@ namespace TMPro
                 if (inputSystem != null && inputSystem.touchSupported)
                 {
                     TouchScreenKeyboard.hideInput = shouldHideMobileInput;
-;
                 }
 
                 if (shouldHideSoftKeyboard == false && m_ReadOnly == false)
                 {
+                    MoveTextEnd(false);
                     if (!GetComponent<Combo>() || Options.allow_combo_keyboard)
                         m_SoftKeyboard = (inputType == InputType.Password) ?
                             TouchScreenKeyboard.Open(m_Text, keyboardType, false, multiLine, true, false, "", characterLimit) :
                             TouchScreenKeyboard.Open(m_Text, keyboardType, inputType == InputType.AutoCorrect, multiLine, false, false, "", characterLimit);
 
                     OnFocus();
-
                     // Opening the soft keyboard sets its selection to the end of the text.
                     // As such, we set the selection to match the Input Field's internal selection.
                     if (m_SoftKeyboard != null)
@@ -4098,7 +4097,6 @@ namespace TMPro
                         int length = stringPositionInternal < stringSelectPositionInternal ? stringSelectPositionInternal - stringPositionInternal : stringPositionInternal - stringSelectPositionInternal;
                         m_SoftKeyboard.selection = new RangeInt(stringPositionInternal < stringSelectPositionInternal ? stringPositionInternal : stringSelectPositionInternal, length);
                     }
-                    //}
                 }
 
                 // Cache the value of isInPlaceEditingAllowed, because on UWP this involves calling into native code

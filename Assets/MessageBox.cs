@@ -10,7 +10,7 @@ public class MessageBox : MonoBehaviour
     public static MessageBox box;
     public static bool allow_show_s = false;
     public TMP_Text message, message_hide;
-    public Button enter, cancel;
+    public Button[] buttons;
     bool active = false;
     LayoutElement layout;
     RectTransform parent;
@@ -25,6 +25,13 @@ public class MessageBox : MonoBehaviour
     }
     public void ShowBox(string msg, UnityAction f = null, bool canCancel = false, UnityAction c = null)
     {
+        if (canCancel)
+            ShowBox(msg, new UnityAction[] { f, c });
+        else
+            ShowBox(msg, new UnityAction[] { f });
+    }
+    public void ShowBox(string msg, UnityAction[] f)
+    {
         if (!layout || !parent)
         {
             layout = message.GetComponent<LayoutElement>();
@@ -35,32 +42,34 @@ public class MessageBox : MonoBehaviour
             gameObject.SetActive(false);
             MessageBox newbox = Instantiate(this, transform.parent, false);
             newbox.gameObject.SetActive(false);
-            newbox.ShowBox(msg, f, canCancel, c);
+            newbox.ShowBox(msg, f);
             return;
         }
         message_hide.text = msg;
         message.text = msg;
-        cancel.gameObject.SetActive(canCancel);
-        if (canCancel && c != null)
-            cancel.onClick.AddListener(c);
-        cancel.onClick.AddListener(CleanAction);
-
-        if (f != null)
-            enter.onClick.AddListener(f);
-        enter.onClick.AddListener(CleanAction);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].gameObject.SetActive(i < f.Length);
+            if (i < f.Length)
+            {
+                if (f[i] != null)
+                    buttons[i].onClick.AddListener(f[i]);
+                buttons[i].onClick.AddListener(CleanAction);
+            }
+        }
         active = true;
         gameObject.SetActive(true);
-        message_hide.gameObject.SetActive(true);
         layout.preferredHeight = message_hide.preferredHeight;
-        message_hide.gameObject.SetActive(false);
     }
     public void CleanAction()
     {
-        enter.onClick.RemoveAllListeners();
-        cancel.onClick.RemoveAllListeners();
+        foreach (var button in buttons)
+        {
+            button.onClick.RemoveAllListeners();
+        }
         gameObject.SetActive(false);
         active = false;
-        if (gameObject != box.gameObject)
+        if (gameObject != box.gameObject && buttons.Length == 2)
         {
             Destroy(gameObject);
         }
@@ -80,9 +89,12 @@ public class MessageBox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.activeSelf && layout.minHeight != parent.sizeDelta.y)
+        if (gameObject.activeSelf)
         {
-            layout.minHeight = parent.sizeDelta.y;
+            if (layout.minHeight != parent.sizeDelta.y)
+                layout.minHeight = parent.sizeDelta.y;
+            if (layout.preferredHeight != message_hide.preferredHeight)
+                layout.preferredHeight = message_hide.preferredHeight;
         }
     }
 }

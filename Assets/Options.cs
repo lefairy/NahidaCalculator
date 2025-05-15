@@ -128,7 +128,7 @@ static public class ValueDict
 
 public class Options : MonoBehaviour
 {
-    [SerializeField] public Mod_InputField quality, fps, calcMode, step, save;
+    [SerializeField] public Mod_InputField quality, fps, calcMode, step, save, path_len;
     [SerializeField] public Toggle entry_two, optimize, calc_box, combo_keyboard;
     SLValue maindef, subdef;
 
@@ -139,6 +139,7 @@ public class Options : MonoBehaviour
         quality = "最高",
         mode = "原神",
         fps = 120,
+        path_len = 260,
         step = 1e-10,
         entry_two = false,
         optimize = true,
@@ -149,11 +150,16 @@ public class Options : MonoBehaviour
     public struct SLOption
     {
         public string quality, mode, save;
-        public int fps;
+        public int fps, path_len;
         public double step;
         public bool entry_two, optimize, calc_box, combo_keyboard;
     }
     bool allow_set = true;
+
+    static public bool force_entry_two = false, calc_optimize = true, show_calc_box = true, allow_combo_keyboard = false;
+    static public int mode = 原神, save_path_len = 260;
+    static public double def_base = 2000, def_res = 0.1, res_div = 2, calc_step = 1e-10;
+    static public string save_path;
 
     public void SetQuality(TMP_Text input)
     {
@@ -181,6 +187,7 @@ public class Options : MonoBehaviour
         {
             allow_set = false;
             int.TryParse(input.text, out int fps);
+            if (fps <= 0) { fps = defOption.fps; input.text = ""; }
             if (SetFPS(fps, true)) slOption.fps = fps;
         }
     }
@@ -197,12 +204,36 @@ public class Options : MonoBehaviour
         return false;
     }
 
+    public void SetPathLen(Mod_InputField input)
+    {
+        if (allow_set)
+        {
+            allow_set = false;
+            int.TryParse(input.text, out int path_len);
+            if (path_len <= 0) { path_len = defOption.path_len; input.text = ""; }
+            if (SetPathLen(path_len, true)) slOption.path_len = path_len;
+        }
+    }
+    public bool SetPathLen(int path_len, bool box = false)
+    {
+        if (path_len > 0)
+        {
+            if (box) MessageBox.ShowBox_s("存档完整路径长度限制已设置为: " + path_len, delegate { allow_set = true; });
+            else this.path_len.text = path_len.ToString();
+            save_path_len = path_len;
+            return true;
+        }
+        if (box) allow_set = true;
+        return false;
+    }
+
     public void SetStep(Mod_InputField input)
     {
         if (allow_set)
         {
             allow_set = false;
             double.TryParse(input.text, out double step);
+            if (step <= 0) { step = defOption.step; input.text = ""; }
             if (SetStep(step, true)) slOption.step = step;
         }
     }
@@ -343,7 +374,7 @@ public class Options : MonoBehaviour
             SetSave(input.text, true);
         }
     }
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR_WIN
     void Android_Permission()
     {
         Permission.RequestUserPermissions(new string[] { Permission.ExternalStorageRead, Permission.ExternalStorageWrite, "android.permission.MANAGE_EXTERNAL_STORAGE" });
@@ -398,7 +429,7 @@ public class Options : MonoBehaviour
             SaveLoad sl = GetComponent<SaveLoad>();
             if (sl.CheckPath(path))
             {
-                if (!Equals(save_path, path) && new DirectoryInfo(save_path).Exists)
+                if (!Equals(Path.GetFullPath(save_path), path) && new DirectoryInfo(save_path).Exists)
                 {
                     CopyDirectory(save_path, path);
                     Directory.Delete(save_path, true);
@@ -447,12 +478,6 @@ public class Options : MonoBehaviour
         save.text = defOption.save = slOption.save = save_path = path;
     }
 
-
-    static public bool force_entry_two = false, calc_optimize = true, show_calc_box = true, allow_combo_keyboard = false;
-    static public int mode = 原神;
-    static public double def_base = 2000, def_res = 0.1, res_div = 2, calc_step = 1e-10;
-    static public string save_path;
-
     public void LoadOptions(SLOption slOption)
     {
         Combo.allow_show = false;
@@ -465,6 +490,7 @@ public class Options : MonoBehaviour
         SetCalcBox(slOption.calc_box);
         SetComboKeyboard(slOption.combo_keyboard);
         SetSave(slOption.save);
+        SetPathLen(slOption.path_len);
         Combo.allow_show = true;
     }
 

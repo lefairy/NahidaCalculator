@@ -1,0 +1,169 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2218631651352233310
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5899529390199504027, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_CellSize.x
+      value: 1176.1819
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 2362.3638
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 144
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1216.1819
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -636
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248318061168414052, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576573800041743178, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      propertyPath: m_Name
+      value: Gsd-sl
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8576573800041743178, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4278788358605059764}
+  m_SourcePrefab: {fileID: 100100000, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+--- !u!1 &7623527459771696660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8576573800041743178, guid: beb8dee667308ca42b973795afee5dea, type: 3}
+  m_PrefabInstance: {fileID: 2218631651352233310}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4278788358605059764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7623527459771696660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3a8b4bd350432499edcfdb49aea1b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 8
+  baseItem:
+    name: {fileID: 0}
+    hp: {fileID: 0}
+    atk: {fileID: 0}
+    def: {fileID: 0}
+  buffItem:
+    type: {fileID: 0}
+    value: {fileID: 0}
+    const_type: {fileID: 0}
+    remove: {fileID: 0}
+  transItem:
+    src: {fileID: 0}
+    dest: {fileID: 0}
+    rate: {fileID: 0}
+    start: {fileID: 0}
+    end: {fileID: 0}
+    remove: {fileID: 0}
+  listItem:
+    add: {fileID: 0}
+  rateItem:
+    normal: {fileID: 0}
+    trans: {fileID: 0}
+    times: {fileID: 0}
+  reactItem:
+    trans: {fileID: 0}
+    trans_val: {fileID: 0}
+    amp: {fileID: 0}
+    amp_val: {fileID: 0}
+    ta: {fileID: 0}
+  otherItem:
+    inc: {fileID: 0}
+    crit: {fileID: 0}
+    def: {fileID: 0}
+    res: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+    self: {fileID: 0}
+  skillItem:
+    name: {fileID: 0}
+    rate: {fileID: 0}
+    react: {fileID: 0}
+    buff: {fileID: 0}
+    trans: {fileID: 0}
+    other: {fileID: 0}
+    remove: {fileID: 0}

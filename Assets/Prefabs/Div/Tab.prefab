@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5827505698677378411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 679539229681803417}
+  - component: {fileID: 1691120998055139207}
+  - component: {fileID: 142858919786579296}
+  m_Layer: 5
+  m_Name: Tab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &679539229681803417
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5827505698677378411}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1691120998055139207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5827505698677378411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &142858919786579296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5827505698677378411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3a8b4bd350432499edcfdb49aea1b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
+  baseItem:
+    name: {fileID: 0}
+    hp: {fileID: 0}
+    atk: {fileID: 0}
+    def: {fileID: 0}
+  buffItem:
+    type: {fileID: 0}
+    value: {fileID: 0}
+    const_type: {fileID: 0}
+    remove: {fileID: 0}
+  transItem:
+    src: {fileID: 0}
+    dest: {fileID: 0}
+    rate: {fileID: 0}
+    start: {fileID: 0}
+    end: {fileID: 0}
+    remove: {fileID: 0}
+  listItem:
+    add: {fileID: 0}
+  rateItem:
+    normal: {fileID: 0}
+    trans: {fileID: 0}
+    times: {fileID: 0}
+  reactItem:
+    trans: {fileID: 0}
+    trans_val: {fileID: 0}
+    amp: {fileID: 0}
+    amp_val: {fileID: 0}
+    ta: {fileID: 0}
+  otherItem:
+    inc: {fileID: 0}
+    crit: {fileID: 0}
+    def: {fileID: 0}
+    res: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+    self: {fileID: 0}
+  skillItem:
+    name: {fileID: 0}
+    rate: {fileID: 0}
+    react: {fileID: 0}
+    buff: {fileID: 0}
+    trans: {fileID: 0}
+    other: {fileID: 0}
+    remove: {fileID: 0}

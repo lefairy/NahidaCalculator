@@ -33,7 +33,7 @@ public class Result : MonoBehaviour
             for (int i = 0; i < (int)Calc.Type.元素抗性; i++)
             {
                 Transform item = Instantiate(template, panel, false);
-                item.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = ValueDict.type_strings[i];
+                item.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = ValueDict.type_strings[i];
                 value[i] = item.GetChild(1).GetChild(0).GetComponent<Mod_InputField>();
                 entry[i] = item.GetChild(2).GetChild(0).GetComponent<Mod_InputField>();
                 rate[i] = item.GetChild(3).GetChild(0).GetComponent<Mod_InputField>();

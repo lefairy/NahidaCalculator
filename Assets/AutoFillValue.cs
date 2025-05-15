@@ -32,7 +32,7 @@ public class AutoFillValue : MonoBehaviour
             GameObject child_obj = Instantiate(transform.GetChild(0).gameObject, transform, false);
             Transform child = child_obj.GetComponent<RectTransform>();
             Mod_InputField input = child.GetChild(1).GetChild(0).GetComponent<Mod_InputField>();
-            child.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = item.Key;
+            child.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = item.Key;
             input.text = item.Value.ToString();
             input.onValueChanged.AddListener(delegate { UpdateValue(item.Key, input); } );
             child_obj.SetActive(true);

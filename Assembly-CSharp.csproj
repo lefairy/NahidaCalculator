@@ -118,7 +118,6 @@
     <Compile Include="Assets\SaveLoad.cs" />
     <Compile Include="Assets\AllowDrag.cs" />
     <Compile Include="Assets\ButtonPlayer.cs" />
-    <Compile Include="Assets\debug.cs" />
     <Compile Include="Assets\SLValue.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Calc.cs" />

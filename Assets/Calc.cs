@@ -80,7 +80,8 @@ public class Calc : SLStruct
                     continue;
                 }
                 var p = t.src.LastIndexOf("%") > 0 ? 100 : 1;
-                var item = new CalcTrans() { src = dict[t.src], dest = dict[t.dest], value = t.rate / 100, start = t.start / p, end = t.end / p };
+                var p2 = t.dest.LastIndexOf("%") > 0 ? 100 : 1;
+                var item = new CalcTrans() { src = dict[t.src], dest = dict[t.dest], value = t.rate / 100 * p / p2, start = t.start / p, end = t.end / p };
                 if (item.src >= (int)Type.数值生命值 && item.src <= (int)Type.数值防御力)
                 {
                     item.src += Type.总生命值 - Type.数值生命值;
