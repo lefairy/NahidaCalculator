@@ -3777,6 +3777,14 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 2150449975
       objectReference: {fileID: 0}
+    - target: {fileID: 1863435600702690847, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863435600702690847, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 2914790888822814500, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
       propertyPath: m_OnFocusSelectAll
       value: 1
@@ -3864,6 +3872,10 @@ PrefabInstance:
     - target: {fileID: 8557174848014372073, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
       propertyPath: m_Name
       value: InputPanel54
+      objectReference: {fileID: 0}
+    - target: {fileID: 9198410853424406517, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6671,7 +6683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4993497474707335918, guid: e905c41c165c5bc40b0402916cc8a94e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4993497474707335918, guid: e905c41c165c5bc40b0402916cc8a94e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -18028,7 +18040,7 @@ PrefabInstance:
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 104720007}
+      objectReference: {fileID: 1147448309}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -18039,7 +18051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SaveLoad, Assembly-CSharp
+      value: SLOne, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -19029,6 +19041,14 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 2150449975
       objectReference: {fileID: 0}
+    - target: {fileID: 1863435600702690847, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863435600702690847, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 4537216433417009893, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -19112,6 +19132,10 @@ PrefabInstance:
     - target: {fileID: 8557174848014372073, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
       propertyPath: m_Name
       value: InputPanel54
+      objectReference: {fileID: 0}
+    - target: {fileID: 9198410853424406517, guid: c1f5b2afeb6e1dd40b6e56ccf415e68a, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19654,7 +19678,7 @@ PrefabInstance:
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 104720007}
+      objectReference: {fileID: 1147448309}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -19665,7 +19689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SaveLoad, Assembly-CSharp
+      value: SLOne, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -21308,18 +21332,18 @@ PrefabInstance:
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 104720009}
+      objectReference: {fileID: 1147448309}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetOptions
+      value: ResetConfig
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Options, Assembly-CSharp
+      value: SLOne, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6803663371359602099, guid: 510c705afe10d3c40b1ed73c5e2b22d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

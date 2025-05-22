@@ -625,7 +625,7 @@ public class SaveLoad : MonoBehaviour
 
     public void SaveConfig()
     {
-        Save(string.Empty, "config.json", true);
+        Save("", "config.json", true);
     }
     public void LoadConfig()
     {
@@ -695,7 +695,7 @@ public class SaveLoad : MonoBehaviour
     }
     string FullPath(string path, string name = null, bool isConfig = false)
     {
-        string full_path = (isConfig ? configPath : Options.save_path) + (path.StartsWith('/') ? "" : "/") + path.TrimEnd(new char[] { '/', '\\' });
+        string full_path = ((isConfig ? configPath : Options.save_path) + (path.StartsWith('/') ? "" : "/") + path).TrimEnd(new char[] { '/', '\\' });
         if (name != null) full_path += "/" + name + (name.EndsWith(".json") ? "" : ".json");
         return full_path;
     }
