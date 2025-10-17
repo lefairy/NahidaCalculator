@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
@@ -84,7 +81,7 @@ public class SLValue : SLStruct
     [Serializable]
     public struct OtherItem
     {
-        public Toggle inc, crit, def, res, heal, shield, self;
+        public Toggle inc, crit, def, res, heal, shield, self, up;
     }
     [Serializable]
     public struct SkillItem
@@ -94,6 +91,23 @@ public class SLValue : SLStruct
         public CDButton remove;
     }
 
+    public static void TryParse<T>(Mod_InputField input, out T val)
+    {
+        if (typeof(T) == typeof(double))
+        {
+            double.TryParse(input.text.Length > 0 ? input.text : input.placeholder.GetComponent<TMP_Text>().text, out double o);
+            val = (T)(object)o;
+            return;
+        }
+        else if (typeof(T) == typeof(int))
+        {
+            int.TryParse(input.text.Length > 0 ? input.text : input.placeholder.GetComponent<TMP_Text>().text, out int o);
+            val = (T)(object)o;
+            return;
+        }
+        val = default;
+        return;
+    }
 
     public object GetValue()
     {
@@ -103,9 +117,9 @@ public class SLValue : SLStruct
                 {
                     var o = new Base();
                     o.name = baseItem.name.text;
-                    double.TryParse(baseItem.hp.text, out o.baseHp);
-                    double.TryParse(baseItem.atk.text, out o.baseAtk);
-                    double.TryParse(baseItem.def.text, out o.baseDef);
+                    TryParse(baseItem.hp, out o.baseHp);
+                    TryParse(baseItem.atk, out o.baseAtk);
+                    TryParse(baseItem.def, out o.baseDef);
                     return o;
                 }
             case Types.Buff:
@@ -119,7 +133,7 @@ public class SLValue : SLStruct
                     {
                         o.type = buffItem.type.text;
                     }
-                    double.TryParse(buffItem.value.text, out o.value);
+                    TryParse(buffItem.value, out o.value);
                     return o;
                 }
             case Types.TransBuff:
@@ -127,9 +141,9 @@ public class SLValue : SLStruct
                     var o = new TransBuff();
                     o.src = transItem.src.text;
                     o.dest = transItem.dest.text;
-                    double.TryParse(transItem.rate.text, out o.rate);
-                    double.TryParse(transItem.start.text, out o.start);
-                    double.TryParse(transItem.end.text, out o.end);
+                    TryParse(transItem.rate, out o.rate);
+                    TryParse(transItem.start, out o.start);
+                    TryParse(transItem.end, out o.end);
                     return o;
                 }
             case Types.Rate:
@@ -137,16 +151,16 @@ public class SLValue : SLStruct
                     var o = new Rate();
                     o.normal = (List<Buff>)rateItem.normal.GetValue<Buff>();
                     o.trans = (List<TransBuff>)rateItem.trans.GetValue<TransBuff>();
-                    double.TryParse(rateItem.times.text, out o.times);
+                    TryParse(rateItem.times, out o.times);
                     return o;
                 }
             case Types.React:
                 {
                     var o = new React();
                     o.trans.type = reactItem.trans.text;
-                    double.TryParse(reactItem.trans_val.text, out o.trans.value);
+                    TryParse(reactItem.trans_val, out o.trans.value);
                     o.amp.type = reactItem.amp.text;
-                    double.TryParse(reactItem.amp_val.text, out o.amp.value);
+                    TryParse(reactItem.amp_val, out o.amp.value);
                     o.ta = reactItem.ta.isOn;
                     return o;
                 }
@@ -160,6 +174,7 @@ public class SLValue : SLStruct
                     o.heal = otherItem.heal.isOn;
                     o.shield = otherItem.shield.isOn;
                     o.self = otherItem.self.isOn;
+                    o.up = otherItem.up.isOn;
                     return o;
                 }
             case Types.Skill:
@@ -260,6 +275,7 @@ public class SLValue : SLStruct
                     otherItem.heal.isOn = o.heal;
                     otherItem.shield.isOn = o.shield;
                     otherItem.self.isOn = o.self;
+                    otherItem.up.isOn = o.up;
                     break;
                 }
             case Types.Skill:

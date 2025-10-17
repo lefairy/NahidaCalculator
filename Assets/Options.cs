@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.UI;
+using UnityEngine.Android;
 
 public enum ValueType
 {
@@ -23,14 +22,14 @@ public enum ValueType
 static public class ValueDict
 {
     static public Dictionary<ValueType, string[]> buff_types = new Dictionary<ValueType, string[]> {
-        { ValueType.增益属性, new string[] { "生命值", "生命值%", "攻击力", "攻击力%", "防御力", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "无视防御%", "无视抗性%", "敌方易伤%", "治疗加成%", "护盾强效%",  "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%" } },
+        { ValueType.增益属性, new string[] { "生命值", "生命值%", "攻击力", "攻击力%", "防御力", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "无视防御%", "无视抗性%", "敌方易伤%", "独立乘区%", "治疗加成%", "护盾强效%",  "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%", "伤害值提升", "反应伤害值提升" } },
         { ValueType.主词条属性, new string[] { "生命值", "生命值%", "攻击力", "攻击力%", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "治疗加成%" } },
         { ValueType.副词条属性, new string[] { "生命值%", "攻击力%", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%" } },
-        { ValueType.可转化属性, new string[] { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "敌方易伤%", "治疗加成%", "护盾强效%", "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%" } },
+        { ValueType.可转化属性, new string[] { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "敌方易伤%", "独立乘区%", "治疗加成%", "护盾强效%", "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%", "伤害值提升", "反应伤害值提升" } },
         { ValueType.面板属性, new string[] { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "治疗加成%", "护盾强效%", "元素抗性%", "伤害减免%" } },
         { ValueType.倍率类型, new string[] { "生命值倍率%", "攻击力倍率%", "防御力倍率%", "元素精通倍率%", "速度倍率%", "击破倍率%", "固定数值" } },
-        { ValueType.增幅反应, new string[] { "水蒸发", "火蒸发", "火融化", "冰融化" } },
-        { ValueType.剧变反应, new string[] { "扩散", "感电", "超导", "超载", "碎冰", "绽放", "超绽放", "烈绽放", "超激化", "蔓激化" } },
+        { ValueType.增幅反应, new string[] { "水蒸发", "火蒸发", "火融化", "冰融化", "月感电" , "月绽放" } },
+        { ValueType.剧变反应, new string[] { "扩散", "感电", "超导", "超载", "碎冰", "绽放", "超绽放", "烈绽放", "超激化", "蔓激化", "月感电" } },
         { ValueType.画质设置, QualitySettings.names },
         { ValueType.计算模式, new string[] { "原神", "星穹铁道" } }
     };
@@ -110,16 +109,56 @@ static public class ValueDict
         { "护盾强效%", (int)Calc.Type.护盾强效 }, { "元素抗性%", (int)Calc.Type.元素抗性 }, { "伤害减免%", (int)Calc.Type.伤害减免 },
         { "无视防御%", (int)Calc.Type.无视防御 }, { "无视抗性%", (int)Calc.Type.无视抗性 }, { "剧变加成%", (int)Calc.Type.剧变加成 },
         { "增幅加成%", (int)Calc.Type.增幅加成 }, { "速度", (int)Calc.Type.速度 }, { "击破特攻%", (int)Calc.Type.击破特攻 },
-        { "敌方易伤%", (int)Calc.Type.敌方易伤 },
+        { "敌方易伤%", (int)Calc.Type.敌方易伤 }, { "独立乘区%", (int)Calc.Type.独立乘区 }, { "伤害值提升", (int)Calc.Type.伤害值提升 },
+        { "反应伤害值提升", (int)Calc.Type.反应伤害值提升 },
         { "生命值倍率%", (int)Calc.RateType.生命值倍率 }, { "攻击力倍率%", (int)Calc.RateType.攻击力倍率 },
         { "防御力倍率%", (int)Calc.RateType.防御力倍率 }, { "元素精通倍率%", (int)Calc.RateType.元素精通倍率 },
         { "速度倍率%", (int)Calc.RateType.速度倍率 }, { "击破倍率%", (int)Calc.RateType.击破倍率 },
         { "固定数值", (int)Calc.RateType.固定数值 },
     };
 
-    const double base_dmg = 1446.85;
-    static public Dictionary<string, double> react_types = new Dictionary<string, double> {
-        { "扩散", base_dmg * 0.6 }, { "感电", base_dmg * 2 }, { "超导", base_dmg * 1.5 }, { "超载", base_dmg * 2.75 }, { "碎冰", base_dmg * 3 }, { "绽放", base_dmg * 2 }, { "超绽放", base_dmg * 3 }, { "烈绽放", base_dmg * 3 }, { "超激化", base_dmg * 1.15 }, { "蔓激化", base_dmg * 1.25}, { "水蒸发", 2 }, { "火蒸发", 1.5 }, { "火融化", 2 }, { "冰融化", 1.5 }, {"", 0}
+    static public double[] break_base = { 0,
+        54, 58, 62, 67.52638, 70.5094, 73.52282, 76.56605, 79.63846, 82.73947, 85.86844,
+        91.49441, 97.06798, 102.5892, 108.0579, 113.4743, 118.8383, 124.1499, 129.4091, 134.6159, 139.7703,
+        149.3323, 158.8011, 168.1768, 177.4594, 186.6489, 195.7452, 204.7484, 213.6585, 222.4754, 231.1992,
+        246.4276, 261.181, 275.4733, 289.3179, 302.7275, 315.7144, 328.2905, 340.4671, 352.2554, 363.6658,
+        408.124, 451.7883, 494.6798, 536.8188, 578.2249, 618.9172, 658.9138, 698.2326, 736.8905, 774.9041,
+        871.06, 964.8706, 1056.421, 1145.791, 1233.058, 1318.297, 1401.575, 1482.961, 1562.518, 1640.307,
+        1752.322, 1861.901, 1969.124, 2074.066, 2176.798, 2277.39, 2375.909, 2472.416, 2566.974, 2659.641,
+        2780.304, 2898.602, 3014.603, 3128.373, 3239.976, 3349.473, 3456.924, 3562.384, 3665.91, 3767.553,
+        3957.862, 4155.212, 4359.864, 4572.088, 4792.164, 5020.383, 5257.047, 5502.466, 5756.967, 6020.884,
+        6294.565, 6578.373, 6872.682, 7177.881, 7494.371, 7822.572, 8162.917, 8515.854, 8881.849, 9261.387 
+    };
+    static public double[] react_base = { 0,
+        17.165, 18.535, 19.904, 21.274, 22.645, 24.649, 26.640, 28.868, 31.367, 34.143,
+        37.201, 40.659, 44.446, 48.563, 53.748, 59.081, 64.420, 69.724, 75.123, 80.584,
+        86.112, 91.703, 97.244, 102.812, 108.409, 113.201, 118.102, 122.979, 129.727, 136.292,
+        142.670, 149.029, 155.416, 161.825, 169.106, 176.518, 184.072, 191.709, 199.556, 207.382,
+        215.398, 224.165, 233.502, 243.350, 256.063, 268.543, 281.526, 295.013, 309.067, 323.601,
+        336.757, 350.530, 364.482, 378.619, 398.600, 416.398, 434.386, 452.951, 472.606, 492.884,
+        513.568, 539.103, 565.510, 592.538, 624.443, 651.470, 679.496, 707.794, 736.671, 765.640,
+        794.773, 824.677, 851.157, 877.742, 914.229, 946.746, 979.411, 1011.223, 1044.791, 1077.443,
+        1109.997, 1142.976, 1176.369, 1210.184, 1253.835, 1288.952, 1325.484, 1363.456, 1405.097, 1446.853,
+        1446.853, 1446.853, 1446.853, 1446.853, 1561.46, 1561.46, 1561.46, 1561.46, 1561.46, 1674.81
+    };
+    static public Dictionary<string, double> react_values = new Dictionary<string, double> {
+        { "扩散", 0.6 }, { "感电", 2 }, { "超导", 1.5 },
+        { "超载", 2.75 }, { "碎冰", 3 }, { "绽放", 2 },
+        { "超绽放", 3 }, { "烈绽放", 3 }, { "超激化", 1.15 },
+        { "蔓激化", 1.25}, { "月感电", 1.8}, { "", 0 }
+    };
+
+    static public Dictionary<string, double> react_values_amp = new Dictionary<string, double> {
+        { "月感电", 3}, { "月绽放", 1}, { "水蒸发", 2 }, { "火蒸发", 1.5 }, { "火融化", 2 }, { "冰融化", 1.5 }, { "", 0 }
+    };
+
+    static public Dictionary<string, Calc.ReactType> react_types = new Dictionary<string, Calc.ReactType> {
+        { "扩散", Calc.ReactType.常规 }, { "感电", Calc.ReactType.常规 }, { "超导", Calc.ReactType.常规 },
+        { "超载", Calc.ReactType.常规 }, { "碎冰", Calc.ReactType.常规 }, { "绽放", Calc.ReactType.常规 },
+        { "超绽放", Calc.ReactType.常规 }, { "烈绽放", Calc.ReactType.常规 }, { "超激化", Calc.ReactType.激化 },
+        { "蔓激化", Calc.ReactType.激化}, { "月感电", Calc.ReactType.月感电}, { "月绽放", Calc.ReactType.月绽放},
+        { "水蒸发", Calc.ReactType.常规 }, { "火蒸发", Calc.ReactType.常规 }, { "火融化", Calc.ReactType.常规 },
+        { "冰融化", Calc.ReactType.常规 }, { "", Calc.ReactType.常规 }
     };
 
     static public string[] type_strings = { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率", "暴击伤害", "充能效率", "击破特攻", "伤害加成", "治疗加成", "护盾强效" };
@@ -129,7 +168,7 @@ static public class ValueDict
 public class Options : MonoBehaviour
 {
     [SerializeField] public Mod_InputField quality, fps, calcMode, step, save, path_len;
-    [SerializeField] public Toggle entry_two, optimize, calc_box, combo_keyboard;
+    [SerializeField] public Toggle entry_two, multi, calc_box, combo_keyboard, mode_box;
     SLValue maindef, subdef;
 
     public const int 原神 = (int)CalcMode.原神, 星穹铁道 = (int)CalcMode.星穹铁道;
@@ -142,23 +181,24 @@ public class Options : MonoBehaviour
         path_len = 260,
         step = 1e-10,
         entry_two = false,
-        optimize = true,
+        multi = true,
         calc_box = true,
         combo_keyboard = false,
+        mode_box = true,
     };
-    static SLOption slOption = defOption;
+    static public SLOption slOption = defOption;
     public struct SLOption
     {
         public string quality, mode, save;
         public int fps, path_len;
         public double step;
-        public bool entry_two, optimize, calc_box, combo_keyboard;
+        public bool entry_two, multi, calc_box, combo_keyboard, mode_box;
     }
     bool allow_set = true;
 
-    static public bool force_entry_two = false, calc_optimize = true, show_calc_box = true, allow_combo_keyboard = false;
-    static public int mode = 原神, save_path_len = 260;
-    static public double def_base = 2000, def_res = 0.1, res_div = 2, calc_step = 1e-10;
+    static public bool force_entry_two = false, calc_multi = true, show_calc_box = true, allow_combo_keyboard = false, show_mode_box = true;
+    static public int mode = 原神, save_path_len = 260, char_lv = 90, enemy_lv = 100;
+    static public double def_res = 0.1, res_div = 2, calc_step = 1e-10;
     static public string save_path;
 
     public void SetQuality(TMP_Text input)
@@ -186,7 +226,7 @@ public class Options : MonoBehaviour
         if (allow_set)
         {
             allow_set = false;
-            int.TryParse(input.text, out int fps);
+            SLValue.TryParse(input, out int fps);
             if (fps <= 0) { fps = defOption.fps; input.text = ""; }
             if (SetFPS(fps, true)) slOption.fps = fps;
         }
@@ -209,7 +249,7 @@ public class Options : MonoBehaviour
         if (allow_set)
         {
             allow_set = false;
-            int.TryParse(input.text, out int path_len);
+            SLValue.TryParse(input, out int path_len);
             if (path_len <= 0) { path_len = defOption.path_len; input.text = ""; }
             if (SetPathLen(path_len, true)) slOption.path_len = path_len;
         }
@@ -232,7 +272,7 @@ public class Options : MonoBehaviour
         if (allow_set)
         {
             allow_set = false;
-            double.TryParse(input.text, out double step);
+            SLValue.TryParse(input, out double step);
             if (step <= 0) { step = defOption.step; input.text = ""; }
             if (SetStep(step, true)) slOption.step = step;
         }
@@ -246,11 +286,6 @@ public class Options : MonoBehaviour
             {
                 if (step > 0.1)
                     MessageBox.ShowBox_s("自动分配词条计算步长已设置为: " + step + "\r\n注意: 实际生效的步长最大为0.1", delegate { allow_set = true; });
-                else if (step < 0.0001 && !calc_optimize)
-                {
-                    SetOptimize(true);
-                    MessageBox.ShowBox_s("自动分配词条计算步长已设置为: " + step + "\r\n由于步长过低，已强制开启步长递进优化", delegate { allow_set = true; });
-                }
                 else
                     MessageBox.ShowBox_s("自动分配词条计算步长已设置为: " + step + "\r\n注意: 数值越小精度越高, 但计算耗时也越长", delegate { allow_set = true; });
             }
@@ -273,24 +308,18 @@ public class Options : MonoBehaviour
             entry_two.isOn = on;
         return true;
     }
-    public void SetOptimize(Toggle toggle)
+    public void SetMulti(Toggle toggle)
     {
-        if (SetOptimize(toggle.isOn, true)) slOption.optimize = toggle.isOn;
+        if (SetMulti(toggle.isOn, true)) slOption.multi = toggle.isOn;
     }
-    public bool SetOptimize(bool on, bool box = false)
+    public bool SetMulti(bool on, bool box = false)
     {
-        calc_optimize = on;
+        calc_multi = on;
         if (!box)
-            optimize.isOn = on;
+            multi.isOn = on;
         else if (!on)
         {
-            if (calc_step < 0.0001)
-            {
-                SetStep(0.001);
-                MessageBox.ShowBox_s("已关闭步长递进优化\r\n当前步长过低，已重置为0.001");
-            }
-            else
-                MessageBox.ShowBox_s("已关闭步长递进优化\r\n注意: 步长较低时计算耗时会显著延长");
+            MessageBox.ShowBox_s("已关闭多起点词条分配\r\n注意: 极少数情况下词条分配可能陷入局部最优");
         }
         return true;
     }
@@ -316,7 +345,26 @@ public class Options : MonoBehaviour
             combo_keyboard.isOn = on;
         return true;
     }
+    public void SetModeBox(Toggle toggle)
+    {
+        if (SetModeBox(toggle.isOn, true)) slOption.mode_box = toggle.isOn;
+    }
+    public bool SetModeBox(bool on, bool box = false)
+    {
+        show_mode_box = on;
+        if (!box)
+            mode_box.isOn = on;
+        return true;
+    }
 
+    public void SetModeString(string mode)
+    {
+        if (SetMode(mode, false)) {
+            slOption.mode = mode;
+            if (show_mode_box)
+                MessageBox.ShowBox_s("计算模式已设置为: " + mode);
+        }
+    }
     public void SetMode(TMP_Text input)
     {
         if (SetMode(input.text, true)) slOption.mode = input.text;
@@ -327,7 +375,8 @@ public class Options : MonoBehaviour
         if (mode == "原神")
         {
             Options.mode = 原神;
-            def_base = 2000;
+            char_lv = 90;
+            enemy_lv = 100;
             def_res = 0.1;
             res_div = 2;
             ret = true;
@@ -335,7 +384,8 @@ public class Options : MonoBehaviour
         else if (mode == "星穹铁道")
         {
             Options.mode = 星穹铁道;
-            def_base = 2300;
+            char_lv = 80;
+            enemy_lv = 95;
             def_res = 0;
             res_div = 1;
             ret = true;
@@ -343,7 +393,7 @@ public class Options : MonoBehaviour
         if (ret)
         {
             GetComponent<Calc>().ToggleMode();
-            if (box) MessageBox.ShowBox_s("计算模式已设置为: " + mode + "，已修改敌方默认抗性、负抗性收益和防御力基数，在结果中" + (Options.mode == 原神 ? "显示元素精通，隐藏速度和击破特攻" : "显示速度和击破特攻，隐藏元素精通") + "（被隐藏的数值不会参与计算）");
+            if (box) MessageBox.ShowBox_s("计算模式已设置为: " + mode + "，已修改敌方默认抗性、负抗性收益、防御力基数和默认等级，在结果中" + (Options.mode == 原神 ? "显示元素精通，隐藏速度和击破特攻" : "显示速度和击破特攻，隐藏元素精通") + "（被隐藏的数值不会参与计算）");
             else calcMode.text = mode;
             return true;
         }
@@ -486,9 +536,10 @@ public class Options : MonoBehaviour
         SetEntryTwo(slOption.entry_two);
         SetMode(slOption.mode);
         SetStep(slOption.step);
-        SetOptimize(slOption.optimize);
+        SetMulti(slOption.multi);
         SetCalcBox(slOption.calc_box);
         SetComboKeyboard(slOption.combo_keyboard);
+        SetModeBox(slOption.mode_box);
         SetSave(slOption.save);
         SetPathLen(slOption.path_len);
         Combo.allow_show = true;

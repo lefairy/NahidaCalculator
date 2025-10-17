@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,31 +9,46 @@ public class Calc : SLStruct
     [SerializeField] SLValue character, weapon, other, trans;
     public SLValue main, maindef, sub, subdef;
     [SerializeField] SLValue skill;
-    [SerializeField] Mod_InputField len;
+    [SerializeField] UnityEngine.UI.Slider len_slider;
+    [SerializeField] Mod_InputField len, char_lv, enemy_lv;
     [SerializeField] Result grad, cur;
     public string json;
 
     public enum Type
     {
-        百分比生命值, 百分比攻击力, 百分比防御力, 元素精通, 速度, 暴击率, 暴击伤害, 充能效率, 击破特攻, 伤害加成, 治疗加成, 护盾强效, 元素抗性, 伤害减免, 无视防御, 无视抗性, 敌方易伤, 剧变加成, 增幅加成, 基础生命值, 基础攻击力, 基础防御力, 数值生命值, 数值攻击力, 数值防御力, 总生命值, 总攻击力, 总防御力, len
+        百分比生命值, 百分比攻击力, 百分比防御力, 元素精通, 速度, 暴击率, 暴击伤害, 充能效率, 击破特攻, 伤害加成, 治疗加成, 护盾强效,
+        元素抗性, 伤害减免, 无视防御, 无视抗性, 敌方易伤, 独立乘区, 剧变加成, 增幅加成, 伤害值提升, 反应伤害值提升,
+        基础生命值, 基础攻击力, 基础防御力, 数值生命值, 数值攻击力, 数值防御力, 总生命值, 总攻击力, 总防御力, len
     }
     public enum RateType
     {
         生命值倍率, 攻击力倍率, 防御力倍率, 元素精通倍率, 速度倍率, 击破倍率, 固定数值, len
     }
+    public enum ReactType { 常规, 激化, 月感电, 月绽放 };
     public struct Status
     {
         public double[] values;
         public double[] entry_values;
         public double[] trans_values;//转化后属性
         public List<CalcTrans> trans;
-        public void ParseBuff(List<Buff> buffs)
+        public int char_base, enemy_base;
+        public double react_base;
+        public readonly void ParseBuff(List<Buff> buffs)
         {
             var dict = ValueDict.status_types;
             foreach (var buff in buffs)
             {
                 if (buff.type.Length > 0)
-                    values[dict[buff.type]] += buff.type.LastIndexOf("%") > 0 ? buff.value / 100 : buff.value;
+                {
+                    if (buff.type == "独立乘区%")
+                    {
+                        values[(int)Type.独立乘区] *= 1 + buff.value / 100;
+                    }
+                    else
+                    {
+                        values[dict[buff.type]] += buff.type.LastIndexOf("%") > 0 ? buff.value / 100 : buff.value;
+                    }
+                }
             }
             if (Options.mode == Options.原神)
             {
@@ -46,7 +60,7 @@ public class Calc : SLStruct
                 values[(int)Type.元素精通] = 0;
             }
         }
-        public void ParseEntry(Entry entry)
+        public readonly void ParseEntry(Entry entry)
         {
             for (int i = 0; i < entry.词条属性.Length; i++)
             {
@@ -91,7 +105,7 @@ public class Calc : SLStruct
             return src;
         }
 
-        public void CalcEntry(double[] entry = null)
+        public readonly void CalcEntry(double[] entry = null)
         {
             Array.Copy(values, entry_values, (int)Type.len);
             if (entry != null)
@@ -112,7 +126,7 @@ public class Calc : SLStruct
                 entry_values[(int)Type.元素精通] = 0;
             }
         }
-        public void CalcTrans()
+        public readonly void CalcTrans()
         {
             Array.Copy(entry_values, trans_values, (int)Type.len);
             foreach (var tr in trans)
@@ -124,7 +138,14 @@ public class Calc : SLStruct
                     {
                         src = tr.end;
                     }
-                    trans_values[tr.dest] += src * tr.value;
+                    if (tr.dest == (int)Type.独立乘区)
+                    {
+                        trans_values[tr.dest] *= 1 + src * tr.value;
+                    }
+                    else
+                    {
+                        trans_values[tr.dest] += src * tr.value;
+                    }
                 }
             }
             CalcTotal(trans_values);
@@ -139,14 +160,14 @@ public class Calc : SLStruct
             }
             //Debug.Log(String.Format("{0} {1} {2} {3} {4} {5}", trans_values[(int)Type.总生命值], trans_values[(int)Type.总攻击力], trans_values[(int)Type.总防御力], entry_values[(int)Type.总生命值], entry_values[(int)Type.总攻击力], entry_values[(int)Type.总防御力]));
         }
-        public void CalcTotal(double[] values)
+        public readonly void CalcTotal(double[] values)
         {
             values[(int)Type.总生命值] = values[(int)Type.基础生命值] * (1 + values[(int)Type.百分比生命值]) + values[(int)Type.数值生命值];
             values[(int)Type.总攻击力] = values[(int)Type.基础攻击力] * (1 + values[(int)Type.百分比攻击力]) + values[(int)Type.数值攻击力];
             values[(int)Type.总防御力] = values[(int)Type.基础防御力] * (1 + values[(int)Type.百分比防御力]) + values[(int)Type.数值防御力];
         }
 
-        public Status(double hp, double atk, double def)
+        public Status(double hp, double atk, double def, int char_lv, int enemy_lv)
         {
             values = new double[(int)Type.len];
             trans_values = new double[(int)Type.len];
@@ -154,7 +175,13 @@ public class Calc : SLStruct
             values[(int)Type.基础生命值] = hp;
             values[(int)Type.基础攻击力] = atk;
             values[(int)Type.基础防御力] = def;
+            values[(int)Type.独立乘区] = 1;
+            trans_values[(int)Type.独立乘区] = 1;
             trans = new List<CalcTrans>();
+            char_base = Options.mode == Options.原神 ? 500 + char_lv * 5 : 200 + char_lv * 10;
+            enemy_base = Options.mode == Options.原神 ? 500 + enemy_lv * 5 : 200 + enemy_lv * 10;
+            int idx = Math.Min(Math.Max(char_lv, 0), 100);
+            react_base = Options.mode == Options.原神 ? ValueDict.react_base[idx] : ValueDict.break_base[idx];
         }
         public Status(Status status)
         {
@@ -162,6 +189,9 @@ public class Calc : SLStruct
             trans_values = new double[(int)Type.len];
             entry_values = new double[(int)Type.len];
             trans = new List<CalcTrans>(status.trans);
+            char_base = status.char_base;
+            enemy_base = status.enemy_base;
+            react_base = status.react_base;
             Array.Copy(status.values, values, (int)Type.len);
             Array.Copy(status.trans_values, trans_values, (int)Type.len);
             Array.Copy(status.entry_values, entry_values, (int)Type.len);
@@ -200,21 +230,37 @@ public class Calc : SLStruct
                 }
             }
         }
-        public void CalcValues(int end = (int)Type.护盾强效)
+        public readonly void CalcValues(int end = (int)Type.护盾强效)
         {
             for (int i = 0; i < end; i++)
             {
                 词条属性[i] = 词条数[i] * 单词条收益[i];
             }
         }
-        public void AverageCnts()
+        public readonly void AllOneCnts(int type)
         {
             for (int i = 0; i < (int)Type.伤害加成; i++)
             {
-                词条数[i] = 自动分配词条 / (int)Type.伤害加成;
+                词条数[i] = type == i ? 自动分配词条 : 0;
             }
         }
-        public double[] TotalCnts()
+        public readonly void AllSameCnts(double cnts)
+        {
+            for (int i = 0; i < (int)Type.伤害加成; i++)
+            {
+                词条数[i] = cnts;
+            }
+        }
+        public readonly double TotalAutoCnts()
+        {
+            double total = 0;
+            for (int i = 0; i < (int)Type.护盾强效; i++)
+            {
+                total += 词条数[i];
+            }
+            return total;
+        }
+        public readonly double[] TotalCnts()
         {
             double[] cnts = new double[(int)Type.护盾强效];
             for (int i = 0; i < (int)Type.护盾强效; i++)
@@ -223,7 +269,7 @@ public class Calc : SLStruct
             }
             return cnts;
         }
-        public double[] CalcCnts(double[] values, double[] entry_values, bool write = true)
+        public readonly double[] CalcCnts(double[] values, double[] entry_values, bool write = true)
         {
             for (int i = 0; i < (int)Type.护盾强效; i++)
             {
@@ -279,7 +325,7 @@ public class Calc : SLStruct
             public double[] trans_values;
             public List<CalcTrans> trans;
             public double times;
-            public void ParseBuff(List<Buff> buffs)
+            public readonly void ParseBuff(List<Buff> buffs)
             {
                 foreach (var buff in buffs)
                 {
@@ -288,11 +334,11 @@ public class Calc : SLStruct
                     else if (buff.type == "防御力倍率%") { values[(int)RateType.防御力倍率] += buff.value * times / 100; }
                     else if (buff.type == "元素精通倍率%") { if (Options.mode == Options.原神) values[(int)RateType.元素精通倍率] += buff.value * times / 100; }
                     else if (buff.type == "速度倍率%") { if (Options.mode == Options.星穹铁道) values[(int)RateType.速度倍率] += buff.value * times / 100; }
-                    else if (buff.type == "击破倍率%") { if (Options.mode == Options.星穹铁道) values[(int)RateType.击破倍率] += buff.value * times / 100 * 3767.8; }
+                    else if (buff.type == "击破倍率%") { if (Options.mode == Options.星穹铁道) values[(int)RateType.击破倍率] += buff.value * times / 100; }
                     else if (buff.type == "固定数值") { values[(int)RateType.固定数值] += buff.value * times; }
                 }
             }
-            public void CalcTrans(double[] base_status)
+            public readonly void CalcTrans(double[] base_status)
             {
                 Array.Copy(values, trans_values, (int)RateType.len);
                 foreach (var tr in trans)
@@ -317,7 +363,7 @@ public class Calc : SLStruct
                     trans_values[(int)RateType.元素精通倍率] = 0;
                 }
             }
-            public double CalcDmg(double[] status)
+            public readonly double CalcDmg(double[] status)
             {
                 //Debug.Log(String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", trans_values[0], trans_values[1], trans_values[2], trans_values[3], trans_values[4], status[(int)Type.总生命值], status[(int)Type.总攻击力], status[(int)Type.总防御力], status[(int)Type.元素精通]));
                 return status[(int)Type.总生命值] * trans_values[(int)RateType.生命值倍率] +
@@ -327,7 +373,7 @@ public class Calc : SLStruct
                     status[(int)Type.速度] * trans_values[(int)RateType.速度倍率] +
                     trans_values[(int)RateType.固定数值];
             }
-            public double Calc击破(double[] status)
+            public readonly double Calc击破(double[] status)
             {
                 return values[(int)RateType.击破倍率] * (1 + status[(int)Type.击破特攻]);
             }
@@ -343,57 +389,93 @@ public class Calc : SLStruct
         }
         public struct React
         {
-            public double 剧变基础伤害;
-            public bool 激化, 剧变触发增幅;
+            public ReactType 剧变类型, 增幅类型;
+            public double 剧变基础伤害, 剧变触发次数;
+            public bool 剧变触发增幅;
             public double 增幅倍率, 增幅覆盖率;
-            public React(SLStruct.React react)
+            public React(SLStruct.React react, double react_base)
             {
                 if (Options.mode == Options.原神)
                 {
                     var dict = ValueDict.react_types;
-                    剧变基础伤害 = dict[react.trans.type] * react.trans.value;
-                    激化 = react.trans.type.IndexOf("激化") > 0;
+                    剧变基础伤害 = ValueDict.react_values[react.trans.type] * react_base;
+                    剧变触发次数 = react.trans.value;
+                    剧变类型 = dict[react.trans.type];
                     剧变触发增幅 = react.ta;
-                    增幅倍率 = dict[react.amp.type];
+                    增幅倍率 = ValueDict.react_values_amp[react.amp.type];
+                    增幅类型 = dict[react.amp.type];
                     增幅覆盖率 = react.amp.value / 100;
                 }
                 else
                 {
                     剧变基础伤害 = 0;
-                    激化 = false;
+                    剧变触发次数 = 0;
+                    剧变类型 = ReactType.常规;
                     剧变触发增幅 = false;
                     增幅倍率 = 0;
+                    增幅类型 = ReactType.常规;
                     增幅覆盖率 = 0;
                 }
             }
-            public double Calc激化(double[] status)
+            public readonly double Calc激化(double[] status)
             {
-                if (激化)
+                if (剧变类型 == ReactType.激化)
                 {
-                    return 剧变基础伤害 * (1 + 5 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 1200) + status[(int)Type.剧变加成]);
+                    return (剧变基础伤害 * (1 + 5 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 1200) + status[(int)Type.剧变加成]) + status[(int)Type.反应伤害值提升]) * 剧变触发次数;
                 }
                 else
                 {
                     return 0;
                 }
             }
-            public double Calc增幅(double[] status)
+            public readonly double Calc增幅(double[] status)
             {
                 if (增幅倍率 == 0)
                 {
                     return 1;
                 }
-                return 增幅倍率 * (1 + 2.78 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 1400) + status[(int)Type.增幅加成]) * 增幅覆盖率 + 1 - 增幅覆盖率;
+                if (增幅类型 == ReactType.常规)
+                {
+                    return 增幅倍率 * (1 + 2.78 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 1400) + status[(int)Type.增幅加成]) * 增幅覆盖率 + 1 - 增幅覆盖率;
+                }
+                else if (增幅类型 == ReactType.月感电 || 增幅类型 == ReactType.月绽放)
+                {
+                    return 1 - 增幅覆盖率;
+                }
+                return 1;
             }
-            public double Calc剧变(double[] status)
+            public readonly double Calc月增幅(double[] status)
             {
-                if (激化)
+                if (增幅倍率 == 0)
                 {
                     return 0;
                 }
+                if (增幅类型 == ReactType.月感电 || 增幅类型 == ReactType.月绽放)
+                {
+                    return 增幅倍率 * (1 + 6 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 2000) + status[(int)Type.剧变加成]) * 增幅覆盖率;
+                }
+                return 0;
+            }
+            public readonly double Calc剧变(double[] status)
+            {
+                if (剧变类型 == ReactType.常规)
+                {
+                    return (剧变基础伤害 * (1 + 16 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 2000) + status[(int)Type.剧变加成]) + status[(int)Type.反应伤害值提升]) * 剧变触发次数;
+                }
                 else
                 {
-                    return 剧变基础伤害 * (1 + 16 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 2000) + status[(int)Type.剧变加成]);
+                    return 0;
+                }
+            }
+            public readonly double Calc月剧变(double[] status)
+            {
+                if (剧变类型 == ReactType.月感电)
+                {
+                    return (剧变基础伤害 * (1 + 6 * status[(int)Type.元素精通] / (status[(int)Type.元素精通] + 2000) + status[(int)Type.剧变加成]) + status[(int)Type.反应伤害值提升]) * 剧变触发次数;
+                }
+                else
+                {
+                    return 0;
                 }
             }
         }
@@ -407,7 +489,7 @@ public class Calc : SLStruct
         {
             name = skill.name;
             rate = new Rate(skill.rate.normal, skill.rate.times);
-            react = new React(skill.react);
+            react = new React(skill.react, stat.react_base);
             status = new Status(stat);
             status.ParseBuff(skill.buff);
             status.ParseTrans(skill.trans);
@@ -420,21 +502,34 @@ public class Calc : SLStruct
             status.CalcTrans();
             rate.CalcTrans(status.trans_values);
             double[] values = status.trans_values;
-            double 基础伤害 = rate.CalcDmg(values) + react.Calc激化(values);
+            double tmp1 = values[(int)Type.伤害值提升];
+            double tmp2 = values[(int)Type.反应伤害值提升];
+            if (!other.up)
+            {
+                values[(int)Type.伤害值提升] /= values[(int)Type.独立乘区];
+                values[(int)Type.反应伤害值提升] /= values[(int)Type.独立乘区];
+            }
+            double 基础伤害 = rate.CalcDmg(values);
+            double 激化伤害 = react.Calc激化(values);
             double 增幅倍率 = react.Calc增幅(values);
+            double 月增幅倍率 = react.Calc月增幅(values);
             double 剧变伤害 = react.Calc剧变(values);
+            double 月剧变伤害 = react.Calc月剧变(values);
             double 伤害加成 = other.inc ? (1 + values[(int)Type.伤害加成]) : 1;
             double 暴击期望 = other.crit ? (1 + Math.Min(Math.Max(values[(int)Type.暴击率], 0), 1) * values[(int)Type.暴击伤害]) : 1;
-            double 防御乘区 = other.def ? Calc防御(values[(int)Type.无视防御]) : 1;
-            double 抗性乘区 = other.def ? Calc抗性(Options.def_res - values[(int)Type.无视抗性]) : 1;
-
+            double 防御乘区 = other.self ? (0.5 + values[(int)Type.总防御力] / status.enemy_base / 2) : (other.def ? Calc防御(values[(int)Type.无视防御]) : 1);
+            double 抗性乘区 = other.self ? 1 / Calc抗性(values[(int)Type.元素抗性]) : (other.res ? Calc抗性(Options.def_res - values[(int)Type.无视抗性]) : 1);
             double 治疗护盾 = (other.heal ? (1 + values[(int)Type.治疗加成]) : 1) * (other.shield ? (1 + values[(int)Type.护盾强效]) : 1);
-            double 承伤倍率 = other.self ? (0.5 + values[(int)Type.总防御力] / Options.def_base) / Calc抗性(values[(int)Type.元素抗性]) : 1;
             //Debug.Log(string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", 基础伤害, 增幅倍率, 剧变伤害, 伤害加成, 暴击期望, 防御乘区, 抗性乘区, 治疗护盾, 承伤倍率));
-            dmg = ((基础伤害 * 增幅倍率 * 伤害加成 * 暴击期望 * 治疗护盾 * 承伤倍率 + rate.Calc击破(values)) * 防御乘区 + 剧变伤害 * (react.剧变触发增幅 ? 增幅倍率 : 1)) * 抗性乘区 * (1 + values[(int)Type.敌方易伤]);
+            dmg = ((((基础伤害 + rate.times * values[(int)Type.伤害值提升]) * 增幅倍率 + 激化伤害) * 伤害加成 * 暴击期望 + rate.Calc击破(values) * status.react_base) * 防御乘区 +
+                    剧变伤害 * (react.剧变触发增幅 && 增幅倍率 >= 1 ? 增幅倍率 : 1) +
+                    (月剧变伤害 + 月增幅倍率 * 基础伤害 + (月增幅倍率 > 0 ? rate.times * values[(int)Type.反应伤害值提升] : 0)) * 暴击期望
+                ) * 抗性乘区 * 治疗护盾 * (other.self ? 1 : 1 + values[(int)Type.敌方易伤]) * values[(int)Type.独立乘区];
+            values[(int)Type.伤害值提升] = tmp1;
+            values[(int)Type.反应伤害值提升] = tmp2;
             return dmg;
         }
-        public double Calc抗性(double 元素抗性) {
+        public readonly double Calc抗性(double 元素抗性) {
             if (元素抗性 < 0)
                 return 1 - 元素抗性 / Options.res_div;//星铁负抗性收益不减半
             else if (元素抗性 > 0.75)
@@ -442,11 +537,9 @@ public class Calc : SLStruct
             else
                 return 1 - 元素抗性;
         }
-        public double Calc防御(double 无视防御)
+        public readonly double Calc防御(double 无视防御)
         {
-            //原神90级角色100级怪物，防御力基数950/1000
-            //星铁80级角色95级怪物，防御力基数1000/1150
-            return Options.mode == Options.原神 ? (19 / (39 - 20 * 无视防御)) : (20 / (43 - 23 * 无视防御));
+            return status.char_base / (status.char_base + status.enemy_base * (1 - 无视防御));
         }
     }
     struct CalcData
@@ -460,7 +553,8 @@ public class Calc : SLStruct
             backup = data;
             status = new Status(data.character.baseHp + data.weapon.baseHp,
                 data.character.baseAtk + data.weapon.baseAtk,
-                data.character.baseDef + data.weapon.baseDef);
+                data.character.baseDef + data.weapon.baseDef,
+                data.char_lv, data.enemy_lv);
             status.ParseBuff(data.other);
             status.ParseBuff(data.main);
 
@@ -476,7 +570,7 @@ public class Calc : SLStruct
                 skill[i].rate.trans = skill[i].status.ParseTrans(s.rate.trans, null);
             }
         }
-        public bool isEmpty()
+        public readonly bool isEmpty()
         {
             return skill == null || skill.Length == 0;
         }
@@ -515,17 +609,6 @@ public class Calc : SLStruct
             entry.CalcCnts(status.values, status.entry_values);
             entry.CalcValues();
             return CalcCurEntry(null);
-            //status.CalcEntry(entry.词条属性);
-            //status.CalcTrans();
-
-            //skill = new CalcSkill[backup.skill.Count()];
-            //for (int i = 0; i < skill.Length; i++)
-            //{
-            //    Skill s = backup.skill[i];
-            //    skill[i] = new CalcSkill(s, status);
-            //    skill[i].rate.trans = skill[i].status.ParseTrans(s.rate.trans, null);
-            //}
-            //return CalcOnce();
         }
         public double CalcCurEntry(double[] cur_entrys)
         {
@@ -550,17 +633,107 @@ public class Calc : SLStruct
             }
             return CalcOnce();
         }
-        public double CalcAuto(int threads = 1)
+        public struct result
         {
-            double step = 0.1, target_step = Options.calc_step / 2, origin = 0;
-            if (!Options.calc_optimize && target_step >= 0.00005) step = target_step;
-            entry.AverageCnts();
-            double[] inc = new double[(int)Type.伤害加成], dec = new double[(int)Type.伤害加成];
-            int[] inc_type = new int[(int)Type.伤害加成], dec_type = new int[(int)Type.伤害加成];
-            int[] template = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            public double dmg;
+            public double[] entrys;
+        };
+        public double CalcMulti(int threads = 1)
+        {
+            double dmg = 0;
+            double[] entrys = new double[entry.词条数.Length];
             int times = 0;
             var stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
+            for (int i = Options.calc_multi ? (int)Type.百分比生命值 : (int)Type.伤害加成 + 3; i < (int)Type.伤害加成 + 4; i++)
+            {
+                double tmp;
+				switch (i)
+				{
+                    case (int)Type.伤害加成 + 0:
+                        entry.AllSameCnts(0);
+                        break;
+                    case (int)Type.伤害加成 + 1:
+                        entry.AllSameCnts(entry.自动分配词条);
+                        break;
+                    case (int)Type.伤害加成 + 2:
+                        entry.AllSameCnts(entry.自动分配词条 / 2);
+                        break;
+                    case (int)Type.伤害加成 + 3:
+                        entry.AllSameCnts(entry.自动分配词条 / (int)Type.伤害加成);
+                        break;
+                    default:
+                        entry.AllOneCnts(i);
+                        break;
+				}
+                tmp = CalcAuto(ref times);
+                if (tmp > dmg)
+                {
+                    dmg = tmp;
+                    Array.Copy(entry.词条数, entrys, entrys.Length);
+                }
+            }
+            entry.词条数 = entrys;
+            CalcOnce();
+            status.CalcEntry(entry.词条属性);
+            status.CalcTrans();
+            stopwatch.Stop();
+            if(Options.show_calc_box)
+                MessageBox.ShowBox_s("计算完成，共进行" + times + "次词条分配计算，耗时" + stopwatch.Elapsed.TotalMilliseconds + "毫秒");
+            return CalcOnce();
+        }
+        public double CalcAuto(ref int times)
+        {
+            double step = Math.Max(0.1, entry.自动分配词条 / 200);
+            double[] dmgs = new double[(int)Type.伤害加成];
+            int[] dmg_type = new int[(int)Type.伤害加成];
+            int[] template = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            if (entry.自动分配词条 <= step)
+            {
+                return 0;
+            }
+            double start_cnts = entry.TotalAutoCnts();
+            while (start_cnts < entry.自动分配词条 - step)
+            {
+                CalcEntryDmg(dmgs, step, (int)Type.伤害加成);
+                Array.Copy(template, dmg_type, (int)Type.伤害加成);
+                Array.Sort(dmgs, dmg_type);
+                times++;
+                entry.词条数[dmg_type[dmg_type.Length - 1]] += step;
+                start_cnts += step;
+            }
+            while (start_cnts > entry.自动分配词条)
+            {
+                CalcEntryDmg(dmgs, step, (int)Type.伤害加成);
+                Array.Copy(template, dmg_type, (int)Type.伤害加成);
+                Array.Sort(dmgs, dmg_type);
+                times++;
+                double tmp_step = step;
+                for(int i = 0; i < (int)Type.伤害加成; i++)
+                {
+                    ref double cnt = ref entry.词条数[dmg_type[i]];
+                    if (cnt >= tmp_step)
+                    {
+                        cnt -= tmp_step;
+                        break;
+                    }
+                    else
+                    {
+                        tmp_step -= cnt;
+                        cnt = 0;
+					}
+				}
+                start_cnts -= step;
+            }
+            entry.词条数[0] += entry.自动分配词条 - start_cnts;
+            return CalcAutoFine(ref times);
+        }
+        public double CalcAutoFine(ref int times)
+        {
+            double step = Math.Max(0.1, entry.自动分配词条 / 200), target_step = Math.Min(0.1, Options.calc_step / 2), origin;
+            double[] inc = new double[(int)Type.伤害加成], dec = new double[(int)Type.伤害加成];
+            int[] inc_type = new int[(int)Type.伤害加成], dec_type = new int[(int)Type.伤害加成];
+            int[] template = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             for (; ; )
             {
                 origin = CalcOnce();
@@ -604,12 +777,6 @@ public class Calc : SLStruct
                 //已达到对应精度，得出结果
                 if (step == target_step)
                 {
-                    stopwatch.Stop();
-                    CalcOnce();
-                    status.CalcEntry(entry.词条属性);
-                    status.CalcTrans();
-                    if(Options.show_calc_box)
-                        MessageBox.ShowBox_s("计算完成，共进行" + times + "次词条分配计算，耗时" + stopwatch.Elapsed.TotalMilliseconds + "毫秒");
                     return origin;
                 }
                 //提高精度再次计算
@@ -618,7 +785,7 @@ public class Calc : SLStruct
             }
         }
 
-        public double CalcOnce(int end = (int)Type.护盾强效)
+        public readonly double CalcOnce(int end = (int)Type.护盾强效)
         {
             entry.CalcValues(end);
             double v = 0;
@@ -655,7 +822,7 @@ public class Calc : SLStruct
     {
         SLData slData = CalcSL();
         CalcData calcData = new CalcData(slData);
-        double dmg = calcData.CalcAuto();
+        double dmg = calcData.CalcMulti();
         grad.SetDmg(calcData.skill, dmg, dmg / slData.len, 0);
         grad.SetValues(calcData.status.entry_values, calcData.status.trans_values, calcData.entry.TotalCnts(), calcData.CalcRate(1));
         if (!cur.isEmpty())
@@ -700,7 +867,10 @@ public class Calc : SLStruct
         slData.sub = (List<Buff>)sub.GetValue<Buff>();
         slData.subdef = (List<Buff>)subdef.GetValue<Buff>();
         slData.skill = (List<Skill>)skill.GetValue<Skill>();
-        double.TryParse(len.text.Length > 0 ? len.text : len.placeholder.GetComponent<TMP_Text>().text, out slData.len);
+        SLValue.TryParse(len, out slData.len);
+        SLValue.TryParse(char_lv, out slData.char_lv);
+        SLValue.TryParse(enemy_lv, out slData.enemy_lv);
+        slData.mode = Options.slOption.mode;
         slData.cur = cur.GetValuesList();
 
         json = JsonUtility.ToJson(slData);
@@ -728,6 +898,10 @@ public class Calc : SLStruct
             subdef.SetValue(slData.subdef);
             skill.SetValue(slData.skill);
             len.text = slData.len.ToString();
+            len_slider.SetValueWithoutNotify((float)slData.len);
+            char_lv.text = slData.char_lv > 0 ? slData.char_lv.ToString() : "";
+            enemy_lv.text = slData.enemy_lv > 0 ? slData.enemy_lv.ToString() : "";
+            GetComponent<Options>().SetModeString(slData.mode);
             cur.isTrans = false;
             cur.SetValues(slData.cur);
             data = default;
@@ -738,6 +912,8 @@ public class Calc : SLStruct
     {
         grad.ToggleMode();
         cur.ToggleMode();
+        char_lv.placeholder.GetComponent<TMP_Text>().text = Options.char_lv.ToString();
+        enemy_lv.placeholder.GetComponent<TMP_Text>().text = Options.enemy_lv.ToString();
     }
     // Start is called before the first frame update
     void Start()

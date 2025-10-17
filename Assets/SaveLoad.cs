@@ -1,13 +1,10 @@
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using System.IO.Compression;
 using UnityEngine.Events;
-//using UnityEditor.Overlays;
 
 public class SLStruct : MonoBehaviour
 {
@@ -39,7 +36,7 @@ public class SLStruct : MonoBehaviour
     }
     [Serializable] public struct Other
     {
-        public bool inc, crit, def, res, heal, shield, self;
+        public bool inc, crit, def, res, heal, shield, self, up;
     }
     [Serializable] public struct Skill
     {
@@ -69,8 +66,9 @@ public class SLData
     public List<SLStruct.Buff> other, main, sub, maindef, subdef, cur;
     public List<SLStruct.TransBuff> trans;
     public double len;
+    public int char_lv, enemy_lv;
     public List<SLStruct.Skill> skill;
-    public bool isTrans;
+    public string mode;
 }
 
 public class SaveLoad : MonoBehaviour
