@@ -68,8 +68,8 @@
 ![image](https://github.com/user-attachments/assets/2ff58b5f-dd5c-493a-a686-a5c6a4d829bb)
 ![image](https://github.com/user-attachments/assets/4a9f7e79-2720-4f79-aebd-b36ea91ed9bd)
 
-### 下载链接(已更新v5.1.1)：
+### 下载链接(已更新v5.2)：
 
-蓝奏云：https://wwvb.lanzout.com/b0017ho69g密码：nahida  
+蓝奏云：https://wwvb.lanzout.com/b0017wk6eh 密码：nahida  
 NGA论坛：https://nga.178.com/read.php?tid=44068888&_ff=650  
 B站专栏：https://www.bilibili.com/opus/1066084515838951449  
