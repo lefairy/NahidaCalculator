@@ -23,6 +23,13 @@ public class SLStruct : MonoBehaviour
         public string src, dest;
         public double rate, start, end;
     }
+    [Serializable] public struct BuffGroup
+    {
+        public string name;
+        public bool enable;
+        public List<Buff> buff;
+        public List<TransBuff> trans;
+    }
     [Serializable] public struct Rate
     {
         public List<Buff> normal;
@@ -41,6 +48,7 @@ public class SLStruct : MonoBehaviour
     [Serializable] public struct Skill
     {
         public string name;
+        public bool enable;
         public Rate rate;
         public React react;
         public List<Buff> buff;
@@ -57,7 +65,9 @@ public class SLStruct : MonoBehaviour
         Other,
         Skill,
         MainSubDef,
-        List
+        List,
+        Group,
+        // 只能向下增加
     }
 }
 public class SLData
@@ -65,6 +75,7 @@ public class SLData
     public SLStruct.Base character, weapon;
     public List<SLStruct.Buff> other, main, sub, maindef, subdef, cur;
     public List<SLStruct.TransBuff> trans;
+    public List<SLStruct.BuffGroup> buffGroup;
     public double len;
     public int char_lv, enemy_lv;
     public List<SLStruct.Skill> skill;

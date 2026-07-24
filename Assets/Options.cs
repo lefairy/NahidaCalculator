@@ -22,14 +22,14 @@ public enum ValueType
 static public class ValueDict
 {
     static public Dictionary<ValueType, string[]> buff_types = new Dictionary<ValueType, string[]> {
-        { ValueType.增益属性, new string[] { "生命值", "生命值%", "攻击力", "攻击力%", "防御力", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "无视防御%", "无视抗性%", "敌方易伤%", "独立乘区%", "治疗加成%", "护盾强效%",  "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%", "伤害值提升", "反应伤害值提升" } },
+        { ValueType.增益属性, new string[] { "生命值", "生命值%", "攻击力", "攻击力%", "防御力", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "无视防御%", "无视抗性%", "敌方易伤%", "独立乘区%", "治疗加成%", "护盾强效%",  "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%", "伤害值提升", "反应伤害值提升", "反应基础伤害提升%", "反应层数", "笑点", "欢愉度%" } },
         { ValueType.主词条属性, new string[] { "生命值", "生命值%", "攻击力", "攻击力%", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "治疗加成%" } },
         { ValueType.副词条属性, new string[] { "生命值%", "攻击力%", "防御力%", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%" } },
-        { ValueType.可转化属性, new string[] { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "敌方易伤%", "独立乘区%", "治疗加成%", "护盾强效%", "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%", "伤害值提升", "反应伤害值提升" } },
+        { ValueType.可转化属性, new string[] { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "敌方易伤%", "独立乘区%", "治疗加成%", "护盾强效%", "元素抗性%", "伤害减免%", "剧变加成%", "增幅加成%", "伤害值提升", "反应伤害值提升", "反应基础伤害提升%", "反应层数", "笑点", "欢愉度%" } },
         { ValueType.面板属性, new string[] { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率%", "暴击伤害%", "充能效率%", "击破特攻%", "伤害加成%", "治疗加成%", "护盾强效%", "元素抗性%", "伤害减免%" } },
-        { ValueType.倍率类型, new string[] { "生命值倍率%", "攻击力倍率%", "防御力倍率%", "元素精通倍率%", "速度倍率%", "击破倍率%", "固定数值" } },
-        { ValueType.增幅反应, new string[] { "水蒸发", "火蒸发", "火融化", "冰融化", "月感电" , "月绽放" } },
-        { ValueType.剧变反应, new string[] { "扩散", "感电", "超导", "超载", "碎冰", "绽放", "超绽放", "烈绽放", "超激化", "蔓激化", "月感电" } },
+        { ValueType.倍率类型, new string[] { "生命值倍率%", "攻击力倍率%", "防御力倍率%", "元素精通倍率%", "速度倍率%", "击破倍率%", "欢愉倍率%", "固定数值" } },
+        { ValueType.增幅反应, new string[] { "水蒸发", "火蒸发", "火融化", "冰融化", "月感电" , "月绽放", "月结晶", "星超导", "星扩散" } },
+        { ValueType.剧变反应, new string[] { "扩散", "感电", "超导", "超载", "碎冰", "绽放", "超绽放", "烈绽放", "超激化", "蔓激化", "月感电", "月结晶", "星扩散(风)", "星扩散(冰)" } },
         { ValueType.画质设置, QualitySettings.names },
         { ValueType.计算模式, new string[] { "原神", "星穹铁道" } }
     };
@@ -110,11 +110,12 @@ static public class ValueDict
         { "无视防御%", (int)Calc.Type.无视防御 }, { "无视抗性%", (int)Calc.Type.无视抗性 }, { "剧变加成%", (int)Calc.Type.剧变加成 },
         { "增幅加成%", (int)Calc.Type.增幅加成 }, { "速度", (int)Calc.Type.速度 }, { "击破特攻%", (int)Calc.Type.击破特攻 },
         { "敌方易伤%", (int)Calc.Type.敌方易伤 }, { "独立乘区%", (int)Calc.Type.独立乘区 }, { "伤害值提升", (int)Calc.Type.伤害值提升 },
-        { "反应伤害值提升", (int)Calc.Type.反应伤害值提升 },
+        { "反应伤害值提升", (int)Calc.Type.反应伤害值提升 }, { "反应基础伤害提升%", (int)Calc.Type.反应基础伤害提升 }, { "反应层数", (int)Calc.Type.反应层数 },
+        { "笑点", (int)Calc.Type.笑点 }, { "欢愉度%", (int)Calc.Type.欢愉度 },
         { "生命值倍率%", (int)Calc.RateType.生命值倍率 }, { "攻击力倍率%", (int)Calc.RateType.攻击力倍率 },
         { "防御力倍率%", (int)Calc.RateType.防御力倍率 }, { "元素精通倍率%", (int)Calc.RateType.元素精通倍率 },
         { "速度倍率%", (int)Calc.RateType.速度倍率 }, { "击破倍率%", (int)Calc.RateType.击破倍率 },
-        { "固定数值", (int)Calc.RateType.固定数值 },
+        { "欢愉倍率%", (int)Calc.RateType.欢愉倍率 }, { "固定数值", (int)Calc.RateType.固定数值 },
     };
 
     static public double[] break_base = { 0,
@@ -142,23 +143,23 @@ static public class ValueDict
         1446.853, 1446.853, 1446.853, 1446.853, 1561.46, 1561.46, 1561.46, 1561.46, 1561.46, 1674.81
     };
     static public Dictionary<string, double> react_values = new Dictionary<string, double> {
-        { "扩散", 0.6 }, { "感电", 2 }, { "超导", 1.5 },
-        { "超载", 2.75 }, { "碎冰", 3 }, { "绽放", 2 },
-        { "超绽放", 3 }, { "烈绽放", 3 }, { "超激化", 1.15 },
-        { "蔓激化", 1.25}, { "月感电", 1.8}, { "", 0 }
+        { "扩散", 0.6 }, { "感电", 2 }, { "超导", 1.5 }, { "超载", 2.75 }, { "碎冰", 3 }, { "绽放", 2 }, { "超绽放", 3 }, { "烈绽放", 3 },
+        { "超激化", 1.15 }, { "蔓激化", 1.25 }, { "月感电", 3 }, { "月结晶", 1.6 }, { "星扩散(风)", 0.75 }, { "星扩散(冰)", 2 }, { "", 0 }
     };
 
     static public Dictionary<string, double> react_values_amp = new Dictionary<string, double> {
-        { "月感电", 3}, { "月绽放", 1}, { "水蒸发", 2 }, { "火蒸发", 1.5 }, { "火融化", 2 }, { "冰融化", 1.5 }, { "", 0 }
+        { "月感电", 3}, { "月绽放", 1}, { "月结晶", 1.6}, { "星超导", 1 }, { "星扩散", 1 }, { "水蒸发", 2 }, { "火蒸发", 1.5 }, { "火融化", 2 }, { "冰融化", 1.5 }, { "", 0 }
     };
 
     static public Dictionary<string, Calc.ReactType> react_types = new Dictionary<string, Calc.ReactType> {
         { "扩散", Calc.ReactType.常规 }, { "感电", Calc.ReactType.常规 }, { "超导", Calc.ReactType.常规 },
         { "超载", Calc.ReactType.常规 }, { "碎冰", Calc.ReactType.常规 }, { "绽放", Calc.ReactType.常规 },
         { "超绽放", Calc.ReactType.常规 }, { "烈绽放", Calc.ReactType.常规 }, { "超激化", Calc.ReactType.激化 },
-        { "蔓激化", Calc.ReactType.激化}, { "月感电", Calc.ReactType.月感电}, { "月绽放", Calc.ReactType.月绽放},
-        { "水蒸发", Calc.ReactType.常规 }, { "火蒸发", Calc.ReactType.常规 }, { "火融化", Calc.ReactType.常规 },
-        { "冰融化", Calc.ReactType.常规 }, { "", Calc.ReactType.常规 }
+        { "蔓激化", Calc.ReactType.激化 }, { "月感电", Calc.ReactType.月反应 }, { "月绽放", Calc.ReactType.月反应 },
+        { "月结晶", Calc.ReactType.月反应 }, { "星超导", Calc.ReactType.星超导 }, { "星扩散", Calc.ReactType.月反应 },
+        { "星扩散(风)", Calc.ReactType.星扩散风 }, { "星扩散(冰)", Calc.ReactType.星扩散冰 },
+        { "水蒸发", Calc.ReactType.常规 }, { "火蒸发", Calc.ReactType.常规 },
+        { "火融化", Calc.ReactType.常规 }, { "冰融化", Calc.ReactType.常规 }, { "", Calc.ReactType.常规 }
     };
 
     static public string[] type_strings = { "生命值", "攻击力", "防御力", "元素精通", "速度", "暴击率", "暴击伤害", "充能效率", "击破特攻", "伤害加成", "治疗加成", "护盾强效" };

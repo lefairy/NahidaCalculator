@@ -16,7 +16,9 @@ public class NewBehaviourScript1 : Editor
     {
         test = new SerializedObject(target);
         type = test.FindProperty("type");
-        list = new SerializedProperty []{ test.FindProperty("baseItem"), test.FindProperty("buffItem"), test.FindProperty("transItem"), test.FindProperty("rateItem"), test.FindProperty("reactItem"), test.FindProperty("otherItem"), test.FindProperty("skillItem"), null, test.FindProperty("listItem") };
+        list = new SerializedProperty []{ test.FindProperty("baseItem"), test.FindProperty("buffItem"), test.FindProperty("transItem"),
+            test.FindProperty("rateItem"), test.FindProperty("reactItem"), test.FindProperty("otherItem"),
+            test.FindProperty("skillItem"), null, test.FindProperty("listItem"), test.FindProperty("groupItem") };
     }
     public override void OnInspectorGUI()
     {
@@ -37,6 +39,7 @@ public class SLValue : SLStruct
     public BaseItem baseItem;
     public BuffItem buffItem;
     public TransItem transItem;
+    public GroupItem groupItem;
     public ListItem listItem;
     public RateItem rateItem;
     public ReactItem reactItem;
@@ -59,6 +62,14 @@ public class SLValue : SLStruct
     public struct TransItem
     {
         public Mod_InputField src, dest, rate, start, end;
+        public CDButton remove;
+    }
+    [Serializable]
+    public struct GroupItem
+    {
+        public Mod_InputField name;
+        public Toggle enable;
+        public SLValue buff, trans;
         public CDButton remove;
     }
     [Serializable]
@@ -87,6 +98,7 @@ public class SLValue : SLStruct
     public struct SkillItem
     {
         public Mod_InputField name;
+        public Toggle enable;
         public SLValue rate, react, buff, trans, other;
         public CDButton remove;
     }
@@ -146,6 +158,15 @@ public class SLValue : SLStruct
                     TryParse(transItem.end, out o.end);
                     return o;
                 }
+            case Types.Group:
+                {
+                    var o = new BuffGroup();
+                    o.name = groupItem.name.text;
+                    o.enable = groupItem.enable.isOn;
+                    o.buff = (List<Buff>)groupItem.buff.GetValue<Buff>();
+                    o.trans = (List<TransBuff>)groupItem.trans.GetValue<TransBuff>();
+                    return o;
+                }
             case Types.Rate:
                 {
                     var o = new Rate();
@@ -181,6 +202,7 @@ public class SLValue : SLStruct
                 {
                     var o = new Skill();
                     o.name = skillItem.name.text;
+                    o.enable = skillItem.enable.isOn;
                     o.rate = (Rate)skillItem.rate.GetValue();
                     o.react = (React)skillItem.react.GetValue();
                     o.buff = (List<Buff>)skillItem.buff.GetValue<Buff>();
@@ -247,6 +269,15 @@ public class SLValue : SLStruct
                     transItem.end.text = o.end.ToString();
                     break;
                 }
+            case Types.Group:
+                {
+                    var o = (BuffGroup)val;
+                    groupItem.name.text = o.name;
+                    groupItem.enable.isOn = o.enable;
+                    groupItem.buff.SetValue(o.buff);
+                    groupItem.trans.SetValue(o.trans);
+                    break;
+                }
             case Types.Rate:
                 {
                     var o = (Rate)val;
@@ -282,6 +313,7 @@ public class SLValue : SLStruct
                 {
                     var o = (Skill)val;
                     skillItem.name.text = o.name;
+                    skillItem.enable.isOn = o.enable;
                     skillItem.rate.SetValue(o.rate);
                     skillItem.react.SetValue(o.react);
                     skillItem.buff.SetValue(o.buff);
@@ -350,6 +382,14 @@ public class SLValue : SLStruct
                     if (transItem.remove)
                     {
                         transItem.remove.DeleteItem();
+                    }
+                    break;
+                }
+            case Types.Group:
+                {
+                    if (groupItem.remove)
+                    {
+                        groupItem.remove.DeleteItem();
                     }
                     break;
                 }

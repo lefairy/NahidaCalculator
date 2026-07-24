@@ -55,14 +55,12 @@ public class Combo : MonoBehaviour
         {
             if (values[i] == input.text)
             {
-                AllActive();
-                cnt = values.Length;
+                cnt = AllActive();
                 break;
             }
             else if (values[i].IndexOf(input.text) != -1)
             {
-                content.GetChild(i).gameObject.SetActive(true);
-                cnt++;
+                cnt += OneActive(i);
             }
             else
             {
@@ -71,13 +69,32 @@ public class Combo : MonoBehaviour
         }
         ((RectTransform)template).sizeDelta = new Vector2(0, Math.Max(Math.Min(cnt, 6), 1) * one_height + 20);
     }
-    void AllActive()
+    int AllActive()
     {
+        int ret = 0;
         for (int i = 0; i < values.Length; i++)
         {
-            content.GetChild(i).gameObject.SetActive(true);
+            ret += OneActive(i);
         }
+        return ret;
     }
+    int OneActive(int i)
+    {
+        if (Options.mode == Options.原神 && (values[i] == "速度" || values[i] == "击破特攻%" || values[i] == "笑点" ||
+            values[i] == "欢愉度%" || values[i] == "速度倍率%" || values[i] == "击破倍率%" || values[i] == "欢愉倍率%"))
+        {
+            content.GetChild(i).gameObject.SetActive(false);
+            return 0;
+        }
+        else if (Options.mode == Options.星穹铁道 && (values[i] == "元素精通" || values[i] == "剧变加成%" ||
+            values[i] == "增幅加成%" || values[i] == "反应伤害值提升" || values[i] == "反应基础伤害提升%" || values[i] == "反应层数" || values[i] == "元素精通倍率%"))
+        {
+            content.GetChild(i).gameObject.SetActive(false);
+            return 0;
+        }
+        content.GetChild(i).gameObject.SetActive(true);
+        return 1;
+	}
     public void Hide()
     {
         template.gameObject.SetActive(false);
