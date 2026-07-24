@@ -77,14 +77,15 @@
 1、可视化时间轴：在多行时间轴上创建任意个技能实例， 使增益覆盖更加精确，并能按时间轴显示伤害分布  
 2、屏幕方向自动切换：在移动设备上读取陀螺仪数据以自动切换横屏或竖屏，以及可选的隐藏顶部状态栏、侧面留空以适配异形屏等选项(当前版本可以使用强制旋转屏幕的软件切换横竖屏)  
 
-### 界面展示：
+### 界面展示(已更新v5.3)：
 
-![image](https://github.com/user-attachments/assets/12dffa98-68e9-4e21-8a48-33318beefb81)
-![image](https://github.com/user-attachments/assets/2ff58b5f-dd5c-493a-a686-a5c6a4d829bb)
-![image](https://github.com/user-attachments/assets/4a9f7e79-2720-4f79-aebd-b36ea91ed9bd)
+<img width="2276" height="2079" alt="image" src="https://github.com/user-attachments/assets/ce84afb4-0b5b-40a9-8a39-da67f864c50b" />
+<img width="2276" height="2079" alt="image" src="https://github.com/user-attachments/assets/2e42468c-7810-4691-8d85-afbcb4acfc5b" />
+<img width="2276" height="2079" alt="image" src="https://github.com/user-attachments/assets/749ab820-7fe4-4ef0-be5c-0b2de44c916a" />
+<img width="2276" height="2079" alt="image" src="https://github.com/user-attachments/assets/2b58bce0-ffbc-421f-b55a-6568a60bbd31" />
 
-### 下载链接(已更新v5.2)：
+### 下载链接(已更新v5.3和存档包Save.txt)：
 
-蓝奏云：https://wwvb.lanzout.com/b0017wk6eh 密码：nahida  
+蓝奏云：https://wwbhn.lanzout.com/b0018iq4ze 密码：nahida  
 NGA论坛：https://nga.178.com/read.php?tid=44068888&_ff=650  
 B站专栏：https://www.bilibili.com/opus/1066084515838951449  
